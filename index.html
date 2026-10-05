@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Descarga de archivos</title>
+
+<style>
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f3f4f6;
+  font-family: Arial, sans-serif;
+}
+
+.caja {
+  width: 85%;
+  max-width: 380px;
+  background: white;
+  padding: 30px 25px;
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0,0,0,.12);
+}
+
+.icono {
+  font-size: 50px;
+}
+
+h1 {
+  font-size: 24px;
+}
+
+p {
+  color: #667085;
+  line-height: 1.5;
+}
+
+.cargando {
+  width: 42px;
+  height: 42px;
+  border: 4px solid #ddd;
+  border-top-color: #2563eb;
+  border-radius: 50%;
+  animation: girar 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+input {
+  width: 100%;
+  padding: 13px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 9px;
+  font-size: 16px;
+  margin: 10px 0;
+}
+
+button {
+  width: 100%;
+  padding: 13px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 9px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.oculto {
+  display: none;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="caja">
+
+  <div id="inicio">
+    <div class="icono">📥</div>
+    <h1>Descarga aquí los archivos</h1>
+
+    <div class="cargando"></div>
+
+    <p>
+      Descargando archivos…<br>
+      Preparando la descarga
+    </p>
+  </div>
+
+
+  <div id="clave" class="oculto">
+    <div class="icono">🔐</div>
+
+    <h1>Contraseña requerida</h1>
+
+    <p>Ingresa la contraseña para continuar.</p>
+
+    <input
+      id="password"
+      type="password"
+      placeholder="Contraseña"
+    >
+
+    <button onclick="comprobar()">
+      Continuar
+    </button>
+
+    <p id="error" class="error"></p>
+  </div>
+
+
+  <div id="descarga" class="oculto">
+    <div class="icono">✅</div>
+
+    <h1>Acceso concedido</h1>
+
+    <p>Ya puedes descargar el archivo.</p>
+
+    <button onclick="descargar()">
+      Descargar archivos
+    </button>
+  </div>
+
+</div>
+
+
+<script>
+
+const CONTRASEÑA = "1234";
+
+
+setTimeout(function() {
+
+  document.getElementById("inicio").classList.add("oculto");
+
+  document.getElementById("clave").classList.remove("oculto");
+
+}, 3000);
+
+
+function comprobar() {
+
+  const contraseña =
+    document.getElementById("password").value;
+
+  if (contraseña === CONTRASEÑA) {
+
+    document.getElementById("clave")
+      .classList.add("oculto");
+
+    document.getElementById("descarga")
+      .classList.remove("oculto");
+
+  } else {
+
+    document.getElementById("error")
+      .textContent = "Contraseña incorrecta.";
+
+  }
+
+}
+
+
+function descargar() {
+
+  const archivo = new Blob(
+    ["Este es el archivo de ejemplo."],
+    { type: "text/plain" }
+  );
+
+  const enlace =
+    document.createElement("a");
+
+  enlace.href =
+    URL.createObjectURL(archivo);
+
+  enlace.download =
+    "archivo.txt";
+
+  enlace.click();
+
+}
+
+</script>
+
+</body>
+</html>
